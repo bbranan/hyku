@@ -75,6 +75,7 @@ gem 'rsolr', '~> 1.1.2'
 
 gem 'devise'
 gem 'devise-guests', '~> 0.3'
+gem 'devise_invitable', '~> 1.6'
 gem 'devise-i18n'
 
 gem 'apartment'
