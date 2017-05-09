@@ -78,6 +78,26 @@ class Account < ActiveRecord::Base
     fcrepo_endpoint.reset! if fcrepo_endpoint
     redis_endpoint.reset! if redis_endpoint
   end
+  
+  def admin_emails
+    []
+  end
+  
+  def admin_emails=(value)
+    Apartment::Tenant.switch(tenant) do
+      emails = value.split("\n").map(&:strip)
+
+      existing_emails = User.where(email: emails).map do |u|
+        u.add_role :admin, Site.instance
+        u.email
+      end
+      
+      (emails - existing_emails).each do |email|
+        u = User.invite!(email: email)
+        u.add_role :admin, Site.instance 
+      end
+    end
+  end
 
   private
 
