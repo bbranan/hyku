@@ -188,6 +188,7 @@ services:
       external:
 
   redis_primary:
+    restart: on-failure
     image: redis:3
     command: redis-server
     volumes:
@@ -198,6 +199,7 @@ services:
           - redis_cluster
 
   redis:
+    restart: on-failure
     image: redis:3
     command: redis-server --slaveof primary 6379
     links:
@@ -208,6 +210,7 @@ services:
           - redis_cluster
 
   redis_sentinel:
+    restart: on-failure
     image: s7anley/redis-sentinel-docker
     environment:
       - MASTER=redis_primary
